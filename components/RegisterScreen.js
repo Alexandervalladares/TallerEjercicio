@@ -1,33 +1,45 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const RegisterScreen = ({ navigation, route }) => {
+const RegisterScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
-    const handleRegister = () => {
-        if (username && password && email) {
-           
-            alert('Usuario registrado con éxito');
+    const handleRegister = async () => {
+        if (!username || !password || !email) {
+            // Mostrar alerta si algún campo está vacío
+            Alert.alert('Error', 'Por favor, completa todos los campos.');
+            return;
+        }
 
-            
-            route.params.onLogin(username);
-            
-            
-            navigation.navigate('Login');
-        } else {
-            alert('Por favor, completa todos los campos.');
+        try {
+            // Verifica si el usuario ya existe en `AsyncStorage`
+            const existingUser = await AsyncStorage.getItem(`user:${username}`);
+            if (existingUser) {
+                // Mostrar alerta si el usuario ya está registrado
+                Alert.alert('Error', 'El usuario ya está registrado.');
+                return;
+            }
+
+            // Guarda el usuario en `AsyncStorage` con su contraseña
+            const user = { username, email, password };
+            await AsyncStorage.setItem(`user:${username}`, JSON.stringify(user));
+
+            // Mostrar alerta de éxito y navegar a la pantalla de inicio de sesión
+            Alert.alert('Éxito', 'Usuario registrado con éxito', [
+                { text: 'Iniciar sesión', onPress: () => navigation.navigate('Login') },
+            ]);
+        } catch (error) {
+            // Manejar errores durante el registro
+            console.error('Error al registrar usuario:', error);
+            Alert.alert('Error', 'No se pudo registrar el usuario. Por favor, inténtalo de nuevo.');
         }
     };
 
     return (
         <View style={styles.container}>
-            <Image
-                source={require('./rrrrrr.PNG')}
-                style={styles.logo}
-                resizeMode="contain"
-            />
             <Text style={styles.title}>Registrar Usuario</Text>
             <TextInput
                 style={styles.input}
@@ -37,7 +49,7 @@ const RegisterScreen = ({ navigation, route }) => {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Email"
+                placeholder="Correo electrónico"
                 value={email}
                 onChangeText={setEmail}
             />
@@ -49,8 +61,10 @@ const RegisterScreen = ({ navigation, route }) => {
                 onChangeText={setPassword}
             />
             <Button title="Registrar" onPress={handleRegister} />
+
+            {/* Enlace para volver a la pantalla de inicio de sesión */}
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.registerText}>
+                <Text style={styles.loginText}>
                     ¿Ya tienes cuenta? Inicia sesión aquí.
                 </Text>
             </TouchableOpacity>
@@ -63,12 +77,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         justifyContent: 'center',
-    },
-    logo: {
-        width: '80%',
-        height: 150,
-        alignSelf: 'center',
-        marginBottom: 30,
     },
     title: {
         fontSize: 24,
@@ -83,7 +91,7 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderRadius: 5,
     },
-    registerText: {
+    loginText: {
         textAlign: 'center',
         color: '#007AFF',
         marginTop: 15,
