@@ -7,9 +7,16 @@ const LoginScreen = ({ navigation, route }) => {
 
     const { onLogin } = route.params;
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if (username && password) {
-            onLogin(); // Llama a la función de inicio de sesión cuando las credenciales son válidas
+           
+            const isAuthenticated = true; 
+
+            if (isAuthenticated) {
+                onLogin(username);
+            } else {
+                alert('Credenciales inválidas. Por favor, intenta de nuevo.');
+            }
         } else {
             alert('Por favor, ingresa un nombre de usuario y contraseña.');
         }
@@ -17,15 +24,12 @@ const LoginScreen = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            {/* Agrega el logo en la parte superior de la pantalla */}
             <Image
-                source={require('./rrrrrr.PNG')} // Reemplaza la ruta con la ubicación del logo
+                source={require('./rrrrrr.PNG')}
                 style={styles.logo}
                 resizeMode="contain"
             />
-
             <Text style={styles.title}>Iniciar Sesión</Text>
-
             <TextInput
                 style={styles.input}
                 placeholder="Usuario"
@@ -40,8 +44,6 @@ const LoginScreen = ({ navigation, route }) => {
                 onChangeText={setPassword}
             />
             <Button title="Iniciar Sesión" onPress={handleLogin} />
-
-            {/* Enlace para ir a la pantalla de registro */}
             <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                 <Text style={styles.registerText}>
                     ¿No tienes cuenta? Regístrate aquí.
@@ -58,10 +60,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     logo: {
-        width: '80%', // Ajusta según sea necesario
-        height: 150, // Ajusta según sea necesario
+        width: '80%',
+        height: 150,
         alignSelf: 'center',
-        marginBottom: 30, // Espacio debajo del logo
+        marginBottom: 30,
     },
     title: {
         fontSize: 24,

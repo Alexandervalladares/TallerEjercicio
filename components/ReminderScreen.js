@@ -4,8 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
 const ReminderScreen = ({ activities, onEditActivity, onDeleteActivity }) => {
-    const navigation = useNavigation(); // Obtén la instancia de navegación
-
+    const navigation = useNavigation();
     const handleAddActivity = () => {
         navigation.navigate('Registrar');
     };
@@ -33,7 +32,7 @@ const ReminderScreen = ({ activities, onEditActivity, onDeleteActivity }) => {
                             <Text style={styles.text}>Fecha de entrega: {item.dueDate}</Text>
                             <Text style={styles.text}>Hora de entrega: {item.dueTime}</Text>
 
-                            {/* Botones para editar y eliminar actividad */}
+                           
                             <View style={styles.buttonContainer}>
                                 <Button
                                     title="Editar"
@@ -95,6 +94,7 @@ const styles = StyleSheet.create({
 });
 
 export default ReminderScreen;
+
 
 
 

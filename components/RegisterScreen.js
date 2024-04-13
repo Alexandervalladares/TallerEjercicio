@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation, route }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
     const handleRegister = () => {
         if (username && password && email) {
-            // Aquí debes implementar la lógica para registrar al usuario
-            // Una vez registrado, podrías navegar a la pantalla de inicio de sesión
+           
             alert('Usuario registrado con éxito');
+
+            
+            route.params.onLogin(username);
+            
+            
             navigation.navigate('Login');
         } else {
             alert('Por favor, completa todos los campos.');
@@ -19,15 +23,12 @@ const RegisterScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            {/* Agrega el logo en la parte superior de la pantalla */}
             <Image
-                source={require('./rrrrrr.PNG')} // Reemplaza la ruta con la ubicación del logo
+                source={require('./rrrrrr.PNG')}
                 style={styles.logo}
                 resizeMode="contain"
             />
-
             <Text style={styles.title}>Registrar Usuario</Text>
-            
             <TextInput
                 style={styles.input}
                 placeholder="Usuario"
@@ -47,10 +48,7 @@ const RegisterScreen = ({ navigation }) => {
                 value={password}
                 onChangeText={setPassword}
             />
-            
             <Button title="Registrar" onPress={handleRegister} />
-
-            {/* Enlace para regresar a la pantalla de inicio de sesión */}
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.registerText}>
                     ¿Ya tienes cuenta? Inicia sesión aquí.
@@ -67,10 +65,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     logo: {
-        width: '80%', // Ajusta según sea necesario
-        height: 150, // Ajusta según sea necesario
+        width: '80%',
+        height: 150,
         alignSelf: 'center',
-        marginBottom: 30, // Espacio debajo del logo
+        marginBottom: 30,
     },
     title: {
         fontSize: 24,
@@ -93,4 +91,3 @@ const styles = StyleSheet.create({
 });
 
 export default RegisterScreen;
-

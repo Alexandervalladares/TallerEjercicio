@@ -11,18 +11,18 @@ const RegistrarScreen = ({ onActivitySubmit }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
 
-    // Función para determinar el color de la actividad según la fecha de entrega
+  
     const getActivityColor = (dueDate) => {
         const today = new Date();
         const dueDateObj = new Date(dueDate);
 
-        // Comparar la fecha de entrega con la fecha z
+        
         if (dueDateObj.toDateString() === today.toDateString()) {
-            return '#4caf50'; // Verde para entregas del día de hoy
+            return '#4caf50'; 
         } else if (dueDateObj < today) {
-            return '#f44336'; // Rojo para entregas pasadas
+            return '#f44336'; 
         } else {
-            return '#2196f3'; // Azul para entregas futuras
+            return '#2196f3';
         }
     };
 
@@ -36,10 +36,10 @@ const RegistrarScreen = ({ onActivitySubmit }) => {
                 teamName,
                 dueDate: dueDate.toLocaleDateString(),
                 dueTime: dueTime.toLocaleTimeString(),
-                color, // Agrega el color a la actividad
+                color, 
             };
             onActivitySubmit(newActivity);
-            // Limpia los campos después de agregar la actividad
+            
             setActivityName('');
             setSubject('');
             setTeamName('');
@@ -84,7 +84,7 @@ const RegistrarScreen = ({ onActivitySubmit }) => {
                 value={teamName}
                 onChangeText={setTeamName}
             />
-            {/* Selector de fecha */}
+            
             <View style={styles.pickerContainer}>
                 <Button title="Seleccionar Fecha" onPress={() => setShowDatePicker(true)} />
                 {showDatePicker && (
@@ -97,7 +97,7 @@ const RegistrarScreen = ({ onActivitySubmit }) => {
                 )}
                 <Text>{dueDate.toLocaleDateString()}</Text>
             </View>
-            {/* Selector de hora */}
+            
             <View style={styles.pickerContainer}>
                 <Button title="Seleccionar Hora" onPress={() => setShowTimePicker(true)} />
                 {showTimePicker && (
